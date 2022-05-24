@@ -2,12 +2,24 @@
 I/O routines for 1-component (grayscale) images.
  '''
 
-import numpy as np
-import cv2 as cv
-import colored
+try:
+    import numpy as np
+except:
+    !pip install numpy
+try:
+    import cv2 as cv
+except:
+    !pip install opencv-python
+try:
+    import colored
+except:
+    pip install colored
 import os
 import subprocess
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+except:
+    !pip install matplotlib
 
 import logging
 import logging_config
