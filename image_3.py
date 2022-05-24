@@ -2,24 +2,12 @@
 I/O routines for 3-component (color) images.
  '''
 
-try:
-    import numpy as np
-except:
-    !pip install numpy
-try:
-    import cv2 as cv
-except:
-    !pip install opencv-python
-try:
-    import colored
-except:
-    !pip install colored
+import numpy as np
+import cv2 as cv
+import colored
 import os
 import subprocess
-try:
-    import matplotlib.pyplot as plt
-except:
-    !pip install matplotlib
+import matplotlib.pyplot as plt
 
 import logging
 import logging_config
