@@ -1,0 +1,30 @@
+% Emacs, this is -*-latex-*-
+
+\title{Image IO}
+
+\maketitle
+\tableofcontents
+
+\section{Gray-scale images}
+%{{{
+
+Gray-Scale (GS) images have only one (usually
+\href{https://en.wikipedia.org/wiki/Luminance}{luminance}, expressed
+proportionally by the gray colors) channel\footnote{They are usually
+represented in color displays using gray tones (colors where the same
+amount of red, green and blue components have been mixed). However, it
+is quite difficult to find a color display with more than 256 gray
+colors.}. In most of the cases, the number of bits per pixel (the so
+called ``depth'' of the image) is $8$, but it is not rare to use up to
+$16$ bits/pixel in specific contexts such as in
+\href{https://en.wikipedia.org/wiki/Medical_imaging}{Medical Imaging}
+and \href{https://en.wikipedia.org/wiki/Remote_sensing}{Remote
+  Sensing}~\cite{burger2016digital}.
+%}}}
+
+\section{$\text{RGB}$ images}
+
+\section{Resources}
+
+\renewcommand{\addcontentsline}[3]{} % Remove functionality of \addcontentsline
+\bibliography{image-processing}
