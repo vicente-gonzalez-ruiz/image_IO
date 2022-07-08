@@ -39,9 +39,13 @@ def debug_write(img:np.ndarray, prefix:str, image_number:int=0):
 def write(img:np.ndarray, prefix:str, image_number:int=0):
     fn = f"{prefix}{image_number:03d}.png"
     cv.imwrite(fn, img, [cv.IMWRITE_PNG_COMPRESSION, _compression_level])
+    if __debug__:
+        len_output = os.path.getsize(fn)
+        logger.info(f"Before optipng: {len_output} bytes")
     command = f"optipng {fn}"
     logger.debug(command)
-    subprocess.call(["bash", "-c", command])
+    #subprocess.run(["bash", "-c", command], shell=True)
+    subprocess.run([command], shell=True, capture_output=True)
     len_output = os.path.getsize(fn)
     #if __debug__:
     #    print(colored.fore.GREEN + f"image_1.write: {fn}", img.shape, img.dtype, len_output, img.max(), img.min(), colored.style.RESET)

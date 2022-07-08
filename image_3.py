@@ -15,9 +15,9 @@ logger = logging.getLogger(__name__)
 #logging.basicConfig(format="[%(filename)s:%(lineno)s %(levelname)s probando %(funcName)s()] %(message)s")
 ##logger.setLevel(logging.CRITICAL)
 ##logger.setLevel(logging.ERROR)
-logger.setLevel(logging.WARNING)
+#logger.setLevel(logging.WARNING)
 #logger.setLevel(logging.INFO)
-#logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.DEBUG)
 
 _compression_level = 9 # 0=min, 9=max
 
@@ -50,8 +50,12 @@ def write(img:np.ndarray, prefix:str, image_number:int):
     img = cv.cvtColor(img, cv.COLOR_RGB2BGR)
     cv.imwrite(fn, img, [cv.IMWRITE_PNG_COMPRESSION, _compression_level])
     command = f"optipng {fn}"
+    if __debug__:
+        len_output = os.path.getsize(fn)
+        logger.info(f"Before optipng: {len_output} bytes")
     logger.debug(command)
-    subprocess.call(["bash", "-c", command])
+    #subprocess.run(["bash", "-c", command], shell=True, capture_output=True)
+    subprocess.run([command], shell=True, capture_output=True)
     len_output = os.path.getsize(fn)
     #if __debug__:
     #    print(colored.fore.GREEN + f"image_3.write: {fn}", img.shape, img.dtype, len_output, img.max(), img.min(), colored.style.RESET)
