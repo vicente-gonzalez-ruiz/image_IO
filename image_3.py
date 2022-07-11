@@ -60,7 +60,11 @@ def write(img:np.ndarray, prefix:str, image_number:int):
     #if __debug__:
     #    print(colored.fore.GREEN + f"image_3.write: {fn}", img.shape, img.dtype, len_output, img.max(), img.min(), colored.style.RESET)
     logger.info(f"{fn} {img.shape} {img.dtype} len={len_output} max={img.max()} min={img.min()}")
-    return len_output
+    if np.all(img == img[0,0,0]):
+        logger.warning(f"Constant image equal to {img[0,0,0]}!")
+        return 0
+    else:
+        return len_output
 
 def debug_write(img:np.ndarray, prefix:str, image_number:int):
     #fn = name + ".png"
