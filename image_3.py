@@ -1,6 +1,6 @@
-''' MRVC/image_3.py
-I/O routines for 3-component (color) images.
- '''
+'''image_3.py. I/O routines for 3-component (color) images.
+
+'''
 
 import numpy as np
 import cv2 as cv
@@ -46,25 +46,24 @@ def read(prefix:str, image_number:int=0) -> np.ndarray: # [row, column, componen
 
 def write(img:np.ndarray, prefix:str, image_number:int):
     #fn = name + ".png"
+    if np.all(img == img[0,0,0]):
+        logger.warning(f"Constant image equal to {img[0,0,0]}!")
+        return 0
     fn = f"{prefix}{image_number:03d}.png"
     img = cv.cvtColor(img, cv.COLOR_RGB2BGR)
     cv.imwrite(fn, img, [cv.IMWRITE_PNG_COMPRESSION, _compression_level])
-    command = f"optipng {fn}"
     if __debug__:
         len_output = os.path.getsize(fn)
         logger.info(f"Before optipng: {len_output} bytes")
+    #if __debug__:
+    #    print(colored.fore.GREEN + f"image_3.write: {fn}", img.shape, img.dtype, len_output, img.max(), img.min(), colored.style.RESET)
+    command = f"optipng {fn}"
     logger.debug(command)
     #subprocess.run(["bash", "-c", command], shell=True, capture_output=True)
     subprocess.run([command], shell=True, capture_output=True)
     len_output = os.path.getsize(fn)
-    #if __debug__:
-    #    print(colored.fore.GREEN + f"image_3.write: {fn}", img.shape, img.dtype, len_output, img.max(), img.min(), colored.style.RESET)
     logger.info(f"{fn} {img.shape} {img.dtype} len={len_output} max={img.max()} min={img.min()}")
-    if np.all(img == img[0,0,0]):
-        logger.warning(f"Constant image equal to {img[0,0,0]}!")
-        return 0
-    else:
-        return len_output
+    return len_output
 
 def debug_write(img:np.ndarray, prefix:str, image_number:int):
     #fn = name + ".png"

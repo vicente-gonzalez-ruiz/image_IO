@@ -37,9 +37,9 @@ def debug_write(img:np.ndarray, prefix:str, image_number:int=0):
     return len_output
 
 def write(img:np.ndarray, prefix:str, image_number:int=0):
-    if __debug__:
-        if np.all(img == img[0,0]):
-            logger.warning(f"Constant image equal to {img[0,0]}!")
+    if np.all(img == img[0,0]):
+        logger.warning(f"Constant image equal to {img[0,0]}!")
+        return 0
     fn = f"{prefix}{image_number:03d}.png"
     cv.imwrite(fn, img, [cv.IMWRITE_PNG_COMPRESSION, _compression_level])
     if __debug__:
@@ -53,11 +53,7 @@ def write(img:np.ndarray, prefix:str, image_number:int=0):
     #if __debug__:
     #    print(colored.fore.GREEN + f"image_1.write: {fn}", img.shape, img.dtype, len_output, img.max(), img.min(), colored.style.RESET)
     logger.info(f"image_1.write: {fn} {img.shape} {img.dtype} len={len_output} max={img.max()} min={img.min()}")
-    if np.all(img == img[0,0]):
-        logger.warning(f"Constant image equal to {img[0,0]}!")
-        return 0
-    else:
-        return len_output
+    return len_output
 
 
 def normalize(img: np.ndarray) -> np.ndarray: # [row, column, component]
