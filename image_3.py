@@ -1,5 +1,4 @@
-'''image_3.py. I/O routines for 3-component (color) images.
-
+'''image_3.py. I/O routines for 3-components (color) images.
 '''
 
 import numpy as np
@@ -15,8 +14,8 @@ logger = logging.getLogger(__name__)
 #logging.basicConfig(format="[%(filename)s:%(lineno)s %(levelname)s probando %(funcName)s()] %(message)s")
 ##logger.setLevel(logging.CRITICAL)
 ##logger.setLevel(logging.ERROR)
-logger.setLevel(logging.WARNING)
-#logger.setLevel(logging.INFO)
+#logger.setLevel(logging.WARNING)
+logger.setLevel(logging.INFO)
 #logger.setLevel(logging.DEBUG)
 
 _compression_level = 9 # 0=min, 9=max
