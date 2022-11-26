@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "image_IO"
+version = "0.0.1"
+authors = [
+  { name="Vicente González Ruiz", email="vicente.gonzalez.ruiz@gmail.com" },
+]
+description = "Compressed image input/output"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU3.0 License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/vicente-gonzalez-ruiz/image_IO"
+"Bug Tracker" = "https://github.com/vicente-gonzalez-ruiz/image_IO/issues"
