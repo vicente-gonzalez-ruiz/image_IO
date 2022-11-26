@@ -20,7 +20,7 @@ logger.setLevel(logging.INFO)
 
 _compression_level = 9 # 0=min, 9=max
 
-def read(prefix:str, image_number:int=0) -> np.ndarray: # [row, column, component]
+def read(prefix, image_number=0): # [row, column, component]
     #fn = name + ".png"
     fn = f"{prefix}{image_number:03d}.png"
     #if __debug__:
@@ -43,7 +43,7 @@ def read(prefix:str, image_number:int=0) -> np.ndarray: # [row, column, componen
     #return img.astype(np.uint16)
     return img
 
-def write(img:np.ndarray, prefix:str, image_number:int):
+def write(img, prefix, image_number):
     #fn = name + ".png"
     if np.all(img == img[0,0,0]):
         logger.warning(f"Constant image equal to {img[0,0,0]}!")
@@ -64,7 +64,7 @@ def write(img:np.ndarray, prefix:str, image_number:int):
     logger.info(f"{fn} {img.shape} {img.dtype} len={len_output} max={img.max()} min={img.min()}")
     return len_output
 
-def debug_write(img:np.ndarray, prefix:str, image_number:int):
+def debug_write(img, prefix, image_number):
     #fn = name + ".png"
     fn = f"{prefix}{image_number:03d}.png"
     img = cv.cvtColor(img, cv.COLOR_RGB2BGR)
@@ -75,13 +75,14 @@ def debug_write(img:np.ndarray, prefix:str, image_number:int):
     logger.info(f"{fn} {img.shape} {img.dtype} len={len_output} max={img.max()} min={img.min()}")
     return len_output
 
-def normalize(img: np.ndarray) -> np.ndarray: # [row, column, component]
-    max_component = np.max(img)
-    min_component = np.min(img)
-    max_min_component = max_component - min_component
-    return (img - min_component) / max_min_component
+def normalize(img):
+    _max = np.max(img)
+    _min = np.min(img)
+    max_min = _max - _min
+    normalized_img = (img - _min) / max_min
+    return normalized_img
 
-def get_shape(prefix:str) -> int:
+def get_shape(prefix):
     img = read(prefix, 0)
     return img.shape
 
@@ -98,7 +99,8 @@ def show(image, title='', size=(10, 10), fontsize=20):
 
 def show_normalized(image, title='', size=(10, 10), fontsize=20):
     plt.figure(figsize=size)
-    plt.title(f"{title}\nmax={image.max()}\nmin={image.min()}\navg={np.average(image)}", fontsize=fontsize)
+    #plt.title(f"{title}\nmax={image.max()}\nmin={image.min()}\navg={np.average(image)}", fontsize=fontsize)
+    plt.title(title, fontsize=fontsize)
     #plt.imshow(cv.cvtColor(image.astype(np.uint8), cv.COLOR_BGR2RGB))
     _image = normalize(image)
     plt.imshow(_image)

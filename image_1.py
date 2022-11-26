@@ -1,5 +1,5 @@
 ''' image_1.py. I/O routines for 1-component (grayscale) images.
- '''
+'''
 
 import numpy as np
 import cv2 as cv
@@ -14,13 +14,13 @@ logger = logging.getLogger(__name__)
 #logging.basicConfig(format="[%(filename)s:%(lineno)s %(levelname)s probando %(funcName)s()] %(message)s")
 ##logger.setLevel(logging.CRITICAL)
 ##logger.setLevel(logging.ERROR)
-#logger.setLevel(logging.WARNING)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.WARNING)
+#logger.setLevel(logging.INFO)
 #logger.setLevel(logging.DEBUG)
 
 _compression_level = 9 # 0=min, 9=max
 
-def read(prefix:str, image_number:int) -> np.ndarray: # [row, column, component]
+def read(prefix, image_number): # [row, column, component]
     fn = f"{prefix}{image_number:03d}.png"
     #if __debug__:
         #print(colored.fore.GREEN + f"image_1.read: {fn}", end=' ', flush=True)
@@ -35,7 +35,7 @@ def debug_write(img:np.ndarray, prefix:str, image_number:int=0):
     logger.info(f"image_1.write: {fn} {img.shape} {img.dtype} len={len_output} max={img.max()} min={img.min()}")
     return len_output
 
-def write(img:np.ndarray, prefix:str, image_number:int=0):
+def write(img, prefix, image_number=0):
     if np.all(img == img[0,0]):
         logger.warning(f"Constant image equal to {img[0,0]}!")
         return 0
@@ -47,39 +47,42 @@ def write(img:np.ndarray, prefix:str, image_number:int=0):
     command = f"optipng {fn}"
     logger.debug(command)
     #subprocess.run(["bash", "-c", command], shell=True)
-    subprocess.run([command], shell=True, capture_output=True)
+    #subprocess.run([command], shell=True, capture_output=True)
+    subprocess.run([command], shell=True)
     len_output = os.path.getsize(fn)
     #if __debug__:
     #    print(colored.fore.GREEN + f"image_1.write: {fn}", img.shape, img.dtype, len_output, img.max(), img.min(), colored.style.RESET)
     logger.info(f"image_1.write: {fn} {img.shape} {img.dtype} len={len_output} max={img.max()} min={img.min()}")
     return len_output
 
+def normalize(img):
+    _max = np.max(img)
+    _min = np.min(img)
+    max_min = _max - _min
+    normalized_img = (img - _min) / max_min
+    return normalized_img
 
-def normalize(img: np.ndarray) -> np.ndarray: # [row, column, component]
-    max_component = np.max(img)
-    min_component = np.min(img)
-    max_min_component = max_component - min_component
-    return (img - min_component) / max_min_component
-
-def get_image_shape(prefix:str) -> int:
+def get_image_shape(prefix):
     img = read(prefix, 0)
     return img.shape
 
-def print_stats(image):
-    logger.info(f"max={image.max()} min={image.min()} avg={np.average(image)}")
+def print_stats(msg, _max, _min, _avg):
+    logger.info(f"{msg} max={_max} min={_min} avg={_avg}")
 
 def show(image, title='', size=(10, 10), fontsize=20):
     plt.figure(figsize=size)
     plt.title(title, fontsize=fontsize)
     plt.imshow(image, cmap=plt.cm.gray, vmin=0, vmax=255)
-    print_stats(image)
+    _max, _min, _avg = np.max(image), np.min(image), np.average(image)
+    print_stats(title, _max, _min, _avg)
 
 def show_normalized(image, title='', size=(10, 10), fontsize=20):
     plt.figure(figsize=size)
     #plt.imshow(cv.cvtColor(image.astype(np.uint8), cv.COLOR_BGR2RGB))
-    _max, _min, _avg = np.max(image), np.min(image), np.average(image)
-    plt.title(f"{title}\nmax={_max}\nmin={_min}\navg={_avg}", fontsize=fontsize)
+    #plt.title(f"{title}\nmax={_max}\nmin={_min}\navg={_avg}", fontsize=fontsize)
+    plt.title(title, fontsize=fontsize)
     _image = normalize(image)
-    plt.imshow(_image, cmap='gray')
-    print_stats(image)
+    plt.imshow(255*_image, vmax=255, vmin=0, cmap='gray')
+    _max, _min, _avg = np.max(image), np.min(image), np.average(image)
+    print_stats(title, _max, _min, _avg)
 
