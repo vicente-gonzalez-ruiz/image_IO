@@ -7,9 +7,8 @@ import colored
 import os
 import subprocess
 import matplotlib.pyplot as plt
-
 import logging
-import logging_config
+logging.basicConfig(format="[%(filename)s:%(lineno)s %(funcName)s() %(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 #logging.basicConfig(format="[%(filename)s:%(lineno)s %(levelname)s probando %(funcName)s()] %(message)s")
 ##logger.setLevel(logging.CRITICAL)
