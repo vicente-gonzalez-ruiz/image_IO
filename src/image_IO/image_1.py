@@ -19,26 +19,23 @@ logger.setLevel(logging.WARNING)
 
 _compression_level = 9 # 0=min, 9=max
 
-def read(prefix, image_number): # [row, column, component]
-    fn = f"{prefix}{image_number:03d}.png"
+def read(fn): # [row, column, component]
     #if __debug__:
         #print(colored.fore.GREEN + f"image_1.read: {fn}", end=' ', flush=True)
     img = cv.imread(fn, cv.IMREAD_UNCHANGED)
     logger.debug(f"{fn} {img.shape} {img.dtype} len={os.path.getsize(fn)} max={img.max()} min={img.min()}")
     return img
 
-def debug_write(img:np.ndarray, prefix:str, image_number:int=0):
-    fn = f"{prefix}{image_number:03d}.png"
+def debug_write(img:np.ndarray, fn:str):
     cv.imwrite(fn, img, [cv.IMWRITE_PNG_COMPRESSION, _compression_level])
     len_output = os.path.getsize(fn)
     logger.info(f"image_1.write: {fn} {img.shape} {img.dtype} len={len_output} max={img.max()} min={img.min()}")
     return len_output
 
-def write(img, prefix, image_number=0):
+def write(img, fn):
     if np.all(img == img[0,0]):
         logger.warning(f"Constant image equal to {img[0,0]}!")
         return 0
-    fn = f"{prefix}{image_number:03d}.png"
     cv.imwrite(fn, img, [cv.IMWRITE_PNG_COMPRESSION, _compression_level])
     if __debug__:
         len_output = os.path.getsize(fn)

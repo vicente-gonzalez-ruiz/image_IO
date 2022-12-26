@@ -19,9 +19,8 @@ logger.setLevel(logging.INFO)
 
 _compression_level = 9 # 0=min, 9=max
 
-def read(prefix, image_number=0): # [row, column, component]
+def read(fn): # [row, column, component]
     #fn = name + ".png"
-    fn = f"{prefix}{image_number:03d}.png"
     #if __debug__:
     #    print(colored.fore.GREEN + f"image_3.read: {fn}", end=' ', flush=True)
     img = cv.imread(fn, cv.IMREAD_UNCHANGED)
@@ -42,12 +41,11 @@ def read(prefix, image_number=0): # [row, column, component]
     #return img.astype(np.uint16)
     return img
 
-def write(img, prefix, image_number):
+def write(img, fn):
     #fn = name + ".png"
     if np.all(img == img[0,0,0]):
         logger.warning(f"Constant image equal to {img[0,0,0]}!")
         return 0
-    fn = f"{prefix}{image_number:03d}.png"
     img = cv.cvtColor(img, cv.COLOR_RGB2BGR)
     cv.imwrite(fn, img, [cv.IMWRITE_PNG_COMPRESSION, _compression_level])
     if __debug__:
@@ -63,9 +61,8 @@ def write(img, prefix, image_number):
     logger.info(f"{fn} {img.shape} {img.dtype} len={len_output} max={img.max()} min={img.min()}")
     return len_output
 
-def debug_write(img, prefix, image_number):
+def debug_write(img, fn):
     #fn = name + ".png"
-    fn = f"{prefix}{image_number:03d}.png"
     img = cv.cvtColor(img, cv.COLOR_RGB2BGR)
     cv.imwrite(fn, img, [cv.IMWRITE_PNG_COMPRESSION, _compression_level])
     len_output = os.path.getsize(fn)
