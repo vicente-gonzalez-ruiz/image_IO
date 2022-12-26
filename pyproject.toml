@@ -1,6 +1,7 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["hatchling", "setuptools", "setuptools-scm"]
+#build-backend = "hatchling.build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "image_IO"
@@ -16,6 +17,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
 
 [project.urls]
 "Homepage" = "https://github.com/vicente-gonzalez-ruiz/image_IO"
